@@ -1,0 +1,56 @@
+.ichra-class-list-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fefefe;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+.ichra-class-list-container h3 {
+  margin-bottom: 1rem;
+  color: #0c3c78;
+}
+
+.ichra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.ichra-card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.ichra-card:hover {
+  transform: translateY(-4px);
+}
+
+.ichra-card h4 {
+  margin-top: 0;
+  color: #0c3c78;
+  margin-bottom: 0.5rem;
+}
+
+.ichra-card p {
+  margin: 0.3rem 0;
+  color: #333;
+}
+
+.delete-btn {
+  margin-top: 0.8rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}

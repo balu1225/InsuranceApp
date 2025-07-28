@@ -1,0 +1,72 @@
+/* src/components/GroupList.css */
+
+.group-list-wrapper {
+  width: 100%;
+}
+
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.group-card {
+  width: 450px;
+ 
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+
+.group-card:hover {
+  transform: translateY(-5px);
+}
+
+.group-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #0c3c78;
+}
+
+.group-card p {
+  margin: 0.3rem 0;
+}
+
+.location-details ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.actions button {
+  margin-right: 0.6rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.actions button:hover {
+  background-color: #005fa3;
+}
+
+.message {
+  margin-top: 1rem;
+  color: green;
+  font-weight: bold;
+}

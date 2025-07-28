@@ -1,0 +1,47 @@
+/* src/components/Navbar.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background-color: #1a1a1a;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.navbar-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar-buttons button {
+  padding: 0.55rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: #eeeeee;
+  color: #222;
+}
+
+.navbar-buttons button.active {
+  background-color: #0077cc;
+  color: white;
+}
+
+.navbar-buttons button:hover:not(.active) {
+  background-color: #dddddd;
+}
