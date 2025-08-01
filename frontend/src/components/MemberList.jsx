@@ -1,54 +1,49 @@
+// src/components/MemberList.jsx
 import { useEffect, useState } from 'react';
 import api from '../api';
 import './MemberList.css';
 
-function MemberList({ groupId, ichraClassId }) {
+function MemberList({ groupId }) {
   const [members, setMembers] = useState([]);
+  const [message, setMessage] = useState('');
 
-  const load = async () => {
+  const fetchMembers = async () => {
     try {
-      const res = await api.get(`/groups/${groupId}/members`);
-      let data = res.data;
-      // if a class filter is set, only show those
-      if (ichraClassId) {
-        data = data.filter((m) => m.ichra_class_id === ichraClassId);
-      }
-      setMembers(data);
+      const res = await api.get(`/members/${groupId}`);
+      setMembers(res.data);
     } catch (err) {
-      console.error('❌ Failed to fetch members', err);
+      console.error('Failed to fetch members:', err);
+      setMessage('❌ Error loading members.');
     }
   };
 
-  useEffect(load, [groupId, ichraClassId]);
-
-  const delAll = async () => {
-    if (!window.confirm('Delete all members?')) return;
+  const handleDelete = async (memberId) => {
     try {
-      await api.delete(`/groups/${groupId}/members`);
-      setMembers([]);
+      await api.delete(`/members/${groupId}/${memberId}`);
+      setMessage('🗑️ Member deleted.');
+      fetchMembers(); // refresh list
     } catch (err) {
-      console.error('❌ Delete all failed', err);
+      console.error('Failed to delete member:', err);
+      setMessage('❌ Could not delete member.');
     }
   };
+
+  useEffect(() => {
+    fetchMembers();
+  }, [groupId]);
 
   return (
-    <div className="member-list-container">
-      <div className="member-toolbar">
-        <h4>All Members</h4>
-        <button onClick={delAll}>🗑️ Delete All</button>
-      </div>
-      <div className="member-grid">
-        {members.map((m) => (
-          <div key={m._id} className="member-card">
-            <strong>{m.first_name} {m.last_name}</strong>
-            <p>Gender: {m.gender}</p>
-            <p>DOB: {m.date_of_birth}</p>
-            <p>ZIP: {m.zip_code}</p>
-            <p>Salary: ${m.annual_salary}</p>
-            <button>✏️ Update</button>
-          </div>
-        ))}
-      </div>
+    <div className="member-list">
+      {message && <p className="message">{message}</p>}
+      {members.map((m) => (
+        <div key={m._id} className="member-card">
+          <p><strong>Name:</strong> {m.first_name} {m.last_name}</p>
+          <p><strong>DOB:</strong> {m.date_of_birth}</p>
+          <p><strong>Zip:</strong> {m.zip_code}</p>
+          <p><strong>Class ID:</strong> {m.ichra_class_id}</p>
+          <button className="delete-btn" onClick={() => handleDelete(m._id)}>❌ Delete</button>
+        </div>
+      ))}
     </div>
   );
 }

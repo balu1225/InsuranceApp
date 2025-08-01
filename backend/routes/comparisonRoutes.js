@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { generateGroupComparison } = require('../controllers/comparisonController');
+const comparisonController = require('../controllers/comparisonController');
 
-router.get('/:groupId/comparison', generateGroupComparison);
+router.get('/:groupId', comparisonController.generateComparison);
 
 module.exports = router;

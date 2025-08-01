@@ -16,13 +16,16 @@ exports.createMembers = async (req, res) => {
     const response = await IdeonService.createMembers(group.ideon_group_id, members);
 
     const saved = await Promise.all(
-      response.members.map((member) =>
-        new Member({
+      response.members.map((member, index) => {
+        const original = members[index];
+        return new Member({
           ...member,
           group_id: groupId,
-          ichra_class_id: ichraClassId
-        }).save()
-      )
+          ichra_class_id: ichraClassId,
+          old_employer_contribution: original.old_employer_contribution || 0,
+          old_employee_contribution: original.old_employee_contribution || 0
+        }).save();
+      })
     );
 
     res.status(201).json(saved);
@@ -62,13 +65,16 @@ exports.replaceMembers = async (req, res) => {
     await Member.deleteMany({ group_id: groupId });
 
     const saved = await Promise.all(
-      response.members.map((member) =>
-        new Member({
+      response.members.map((member, index) => {
+        const original = members[index];
+        return new Member({
           ...member,
           group_id: groupId,
-          ichra_class_id: ichraClassId
-        }).save()
-      )
+          ichra_class_id: ichraClassId,
+          old_employer_contribution: original.old_employer_contribution || 0,
+          old_employee_contribution: original.old_employee_contribution || 0
+        }).save();
+      })
     );
 
     res.json(saved);
@@ -97,5 +103,3 @@ exports.deleteMembers = async (req, res) => {
     res.status(500).json({ message: 'Failed to delete members' });
   }
 };
-
-    

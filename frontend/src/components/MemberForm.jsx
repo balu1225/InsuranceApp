@@ -1,141 +1,150 @@
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { useState, useEffect } from 'react';
 import api from '../api';
 import './MemberForm.css';
 
-function MemberForm({ groupId, ichraClassId, locationId, onMemberAdded, onClose }) {
-  const [fd, setFd] = useState({
-    cobra: false,
-    retiree: false,
+function MemberForm({ groupId, ichraClassId, onMemberAdded, onCancel }) {
+  const [form, setForm] = useState({
     first_name: '',
     last_name: '',
     date_of_birth: '',
     gender: '',
     zip_code: '',
     fips_code: '',
-    location_id: locationId || '',
-    external_id: '',
+    retiree: false,
+    cobra: false,
+    last_used_tobacco: false,
     annual_salary: '',
     hours_per_week: '',
     household_income: '',
-    household_size: '',
-    safe_harbor_income: '',
-    last_used_tobacco: '',
-    dependents: [],
+    household_size: 1,
+    dependents: []
   });
 
-  const change = (k, v) => setFd({ ...fd, [k]: v });
-  const depChange = (i, k, v) => {
-    const up = [...fd.dependents];
-    up[i][k] = v;
-    setFd({ ...fd, dependents: up });
+  const [classOptions, setClassOptions] = useState([]);
+  const [selectedClass, setSelectedClass] = useState(ichraClassId || '');
+  const [message, setMessage] = useState('');
+
+  // Load available classes for dropdown
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const res = await api.get(`/ichra-classes/${groupId}`);
+        setClassOptions(res.data);
+      } catch (err) {
+        console.error('Error loading classes', err);
+      }
+    };
+    fetchClasses();
+  }, [groupId]);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
-  const addDep = () => setFd({
-    ...fd,
-    dependents: [...fd.dependents, {
-      first_name: '', last_name: '', date_of_birth: '', gender: '',
-      relationship: '', same_household: true, last_used_tobacco: '',
-    }],
-  });
-
-  const remDep = (i) => {
-    const up = [...fd.dependents];
-    up.splice(i, 1);
-    setFd({ ...fd, dependents: up });
+  const handleAddDependent = () => {
+    setForm(prev => ({
+      ...prev,
+      dependents: [...prev.dependents, {
+        first_name: '',
+        last_name: '',
+        date_of_birth: '',
+        gender: '',
+        relationship: '',
+        same_household: true
+      }]
+    }));
   };
 
-  const submit = async (e) => {
+  const handleDependentChange = (index, e) => {
+    const { name, value, type, checked } = e.target;
+    const updated = [...form.dependents];
+    updated[index][name] = type === 'checkbox' ? checked : value;
+    setForm(prev => ({
+      ...prev,
+      dependents: updated
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post(`/groups/${groupId}/members`, {
-        ichraClassId,
-        members: [{ ...fd, location_id: locationId }],
-      });
-      onMemberAdded();
-    } catch {
-      alert('❌ Add member failed');
+      const payload = {
+        ...form,
+        group_id: groupId,
+        ichra_class_id: selectedClass,
+        household_size: form.dependents.length + 1
+      };
+      await api.post('/members', payload);
+      setMessage('✅ Member added successfully!');
+      onMemberAdded(); // Refresh parent view
+    } catch (err) {
+      console.error('Error creating member:', err);
+      setMessage('❌ Failed to add member');
     }
   };
 
   return (
-    <div className="member-modal-overlay">
-      <div className="member-modal">
-        <button className="close-btn" onClick={onClose}>✖</button>
-        <h3>➕ Add Member</h3>
-        <form className="member-form" onSubmit={submit}>
-          <label>First Name:<input required value={fd.first_name} onChange={(e) => change('first_name', e.target.value)} /></label>
-          <label>Last Name:<input required value={fd.last_name} onChange={(e) => change('last_name', e.target.value)} /></label>
-          <label>Gender:
-            <select required value={fd.gender} onChange={(e) => change('gender', e.target.value)}>
-              <option/><option value="M">Male</option><option value="F">Female</option>
-            </select>
-          </label>
-          <label>DOB:
-            <DatePicker
-              selected={fd.date_of_birth ? new Date(fd.date_of_birth) : null}
-              onChange={(d) => change('date_of_birth', d.toISOString().split('T')[0])}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="yyyy-MM-dd"
-              showYearDropdown scrollableYearDropdown
-            />
-          </label>
-          <label>Last Tobacco:
-            <DatePicker
-              selected={fd.last_used_tobacco ? new Date(fd.last_used_tobacco) : null}
-              onChange={(d) => change('last_used_tobacco', d.toISOString().split('T')[0])}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="yyyy-MM-dd"
-            />
-          </label>
-          <label>ZIP:<input required value={fd.zip_code} onChange={(e) => change('zip_code', e.target.value)} /></label>
-          <label>FIPS:<input required value={fd.fips_code} onChange={(e) => change('fips_code', e.target.value)} /></label>
-          <label>External ID:<input required value={fd.external_id} onChange={(e) => change('external_id', e.target.value)} /></label>
-          <label>COBRA:<input type="checkbox" checked={fd.cobra} onChange={(e) => change('cobra', e.target.checked)} /></label>
-          <label>Retiree:<input type="checkbox" checked={fd.retiree} onChange={(e) => change('retiree', e.target.checked)} /></label>
-          <label>Salary:<input type="number" value={fd.annual_salary} onChange={(e) => change('annual_salary', e.target.value)} /></label>
-          <label>Hrs/Week:<input type="number" value={fd.hours_per_week} onChange={(e) => change('hours_per_week', e.target.value)} /></label>
-          <label>HH Income:<input type="number" value={fd.household_income} onChange={(e) => change('household_income', e.target.value)} /></label>
-          <label>HH Size:<input type="number" value={fd.household_size} onChange={(e) => change('household_size', e.target.value)} /></label>
-          <label>Safe Harbor:<input type="number" value={fd.safe_harbor_income} onChange={(e) => change('safe_harbor_income', e.target.value)} /></label>
+    <div className="member-form-container">
+      <h2>Add Member</h2>
+      <form className="member-form" onSubmit={handleSubmit}>
+        <select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} required>
+          <option value="">-- Select ICHRA Class --</option>
+          {classOptions.map(cls => (
+            <option key={cls._id} value={cls._id}>{cls.class_name}</option>
+          ))}
+        </select>
 
-          <h4>👶 Dependents</h4>
-          {fd.dependents.map((d, i) => (
-            <div key={i} className="dependent-box">
-              <label>First:<input value={d.first_name} onChange={(e) => depChange(i,'first_name',e.target.value)} /></label>
-              <label>Last:<input value={d.last_name} onChange={(e) => depChange(i,'last_name',e.target.value)} /></label>
-              <label>Gender:
-                <select value={d.gender} onChange={(e) => depChange(i,'gender',e.target.value)}>
-                  <option/><option value="M">M</option><option value="F">F</option>
-                </select>
+        <input name="first_name" placeholder="First Name" value={form.first_name} onChange={handleChange} required />
+        <input name="last_name" placeholder="Last Name" value={form.last_name} onChange={handleChange} required />
+        <input name="date_of_birth" type="date" value={form.date_of_birth} onChange={handleChange} required />
+        <input name="zip_code" placeholder="ZIP Code" value={form.zip_code} onChange={handleChange} required />
+        <input name="fips_code" placeholder="FIPS Code" value={form.fips_code} onChange={handleChange} />
+        <input name="gender" placeholder="Gender" value={form.gender} onChange={handleChange} />
+
+        <label>
+          <input type="checkbox" name="retiree" checked={form.retiree} onChange={handleChange} />
+          Retiree
+        </label>
+        <label>
+          <input type="checkbox" name="cobra" checked={form.cobra} onChange={handleChange} />
+          COBRA
+        </label>
+        <label>
+          <input type="checkbox" name="last_used_tobacco" checked={form.last_used_tobacco} onChange={handleChange} />
+          Used Tobacco
+        </label>
+
+        <input name="annual_salary" type="number" placeholder="Annual Salary" value={form.annual_salary} onChange={handleChange} />
+        <input name="hours_per_week" type="number" placeholder="Hours per Week" value={form.hours_per_week} onChange={handleChange} />
+        <input name="household_income" type="number" placeholder="Household Income" value={form.household_income} onChange={handleChange} />
+
+        {/* Dependents */}
+        <div className="dependent-section">
+          <h3>Dependents</h3>
+          {form.dependents.map((dep, idx) => (
+            <div key={idx} className="dependent-entry">
+              <input name="first_name" placeholder="First Name" value={dep.first_name} onChange={(e) => handleDependentChange(idx, e)} />
+              <input name="last_name" placeholder="Last Name" value={dep.last_name} onChange={(e) => handleDependentChange(idx, e)} />
+              <input name="date_of_birth" type="date" value={dep.date_of_birth} onChange={(e) => handleDependentChange(idx, e)} />
+              <input name="gender" placeholder="Gender" value={dep.gender} onChange={(e) => handleDependentChange(idx, e)} />
+              <input name="relationship" placeholder="Relationship" value={dep.relationship} onChange={(e) => handleDependentChange(idx, e)} />
+              <label>
+                <input type="checkbox" name="same_household" checked={dep.same_household} onChange={(e) => handleDependentChange(idx, e)} />
+                Same Household
               </label>
-              <label>DOB:
-                <DatePicker
-                  selected={d.date_of_birth ? new Date(d.date_of_birth) : null}
-                  onChange={(dt) => depChange(i,'date_of_birth',dt.toISOString().split('T')[0])}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="yyyy-MM-dd"
-                />
-              </label>
-              <label>Tobacco:
-                <DatePicker
-                  selected={d.last_used_tobacco ? new Date(d.last_used_tobacco) : null}
-                  onChange={(dt) => depChange(i,'last_used_tobacco',dt.toISOString().split('T')[0])}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="yyyy-MM-dd"
-                />
-              </label>
-              <label>Rel:<input value={d.relationship} onChange={(e) => depChange(i,'relationship',e.target.value)} /></label>
-              <label>Same HH:<input type="checkbox" checked={d.same_household} onChange={(e) => depChange(i,'same_household',e.target.checked)} /></label>
-              <button type="button" onClick={() => remDep(i)}>❌ Remove</button>
             </div>
           ))}
-          <button type="button" onClick={addDep}>➕ Add Dependent</button>
+          <button type="button" onClick={handleAddDependent}>➕ Add Dependent</button>
+        </div>
 
-          <button type="submit" className="submit-btn">Submit Member</button>
-        </form>
-      </div>
+        <button type="submit">✅ Submit</button>
+        <button type="button" onClick={onCancel}>❌ Cancel</button>
+        {message && <p>{message}</p>}
+      </form>
     </div>
   );
 }

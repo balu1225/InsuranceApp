@@ -1,33 +1,50 @@
 // src/App.jsx
 import { useState } from 'react';
+import Navbar from './components/Navbar';
 import GroupForm from './components/GroupForm';
 import GroupList from './components/GroupList';
+import GroupDetailView from './components/GroupDetailView';
 import './App.css';
-import './components/GroupForm.css';
-import './components/GroupList.css';
 
 function App() {
-  const [showForm, setShowForm] = useState(false);
+  const [page, setPage] = useState('list');
+  const [selectedGroup, setSelectedGroup] = useState(null);
+
+  const handleGroupSelect = (group) => {
+    setSelectedGroup(group);
+    setPage('groupDetail');
+  };
+
+  const handleBack = () => {
+    setSelectedGroup(null);
+    setPage('list');
+  };
 
   return (
     <div className="app">
-      <nav className="navbar">
-        <h1>Group Insurance Quoting Tool</h1>
-        <button className="add-group-btn" onClick={() => setShowForm(true)}>➕ Add Group</button>
-      </nav>
+      <Navbar currentPage={page} onNavClick={setPage} />
 
       <main className="main-content">
-        <GroupList />
-      </main>
+        {page === 'form' && (
+          <GroupForm
+            onClose={() => setPage('list')}
+            onCreated={() => setPage('list')}
+          />
+        )}
 
-      {showForm && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <button className="close-btn" onClick={() => setShowForm(false)}>✖</button>
-            <GroupForm onClose={() => setShowForm(false)} />
-          </div>
-        </div>
-      )}
+        {page === 'list' && (
+          <GroupList onGroupSelect={handleGroupSelect} />
+        )}
+
+        {page === 'groupDetail' && selectedGroup && (
+          <GroupDetailView
+            group={selectedGroup}
+            onBack={handleBack}
+            onDelete={handleBack}
+            onRefresh={() => setPage('groupDetail')} // re-fetch if needed
+          />
+        )}
+      </main>
     </div>
   );
 }

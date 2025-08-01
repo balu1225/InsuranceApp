@@ -27,7 +27,7 @@ app.use('/api/groups', require('./routes/memberRoutes'));
 app.use('/api/ichra-classes', require('./routes/ichraClassRoutes'));
 app.use('/api/quotes', require('./routes/quoteRoutes'));  
 app.use('/api/affordability', require('./routes/affordabilityRoutes'));
-app.use('/api/groups', require('./routes/comparisonRoutes'));
+app.use('/api/comparison', require('./routes/comparisonRoutes')); // ✅ mount
 
 const PORT = process.env.PORT || 5174;
 app.listen(PORT, () => {

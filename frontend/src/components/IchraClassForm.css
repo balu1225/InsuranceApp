@@ -1,17 +1,25 @@
 .ichra-form-container {
   width: 100%;
-  padding: 2rem;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.ichra-form-container.hidden {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  pointer-events: none;
 }
 
 .ichra-form-container h2 {
-  margin-bottom: 1.5rem;
-  color: #222;
-  font-size: 1.6rem;
-  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #0c3c78;
 }
 
 .ichra-form {
@@ -26,27 +34,24 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   width: 100%;
-  color: #000;
-  background-color: #fff;
 }
 
 .ichra-form button {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
   background-color: #007bff;
+  border: none;
   color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .ichra-form button:hover {
   background-color: #0056b3;
 }
 
-.ichra-form .message {
-  color: green;
-  font-weight: 500;
+.message {
   margin-top: 1rem;
+  color: green;
 }

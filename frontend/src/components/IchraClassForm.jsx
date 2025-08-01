@@ -1,3 +1,4 @@
+// src/components/IchraClassForm.jsx
 import { useState } from 'react';
 import api from '../api';
 import './IchraClassForm.css';
@@ -46,7 +47,7 @@ function IchraClassForm({ groupId, onCreated }) {
         }
       };
 
-      const res = await api.post('/ichra-classes', payload);
+      await api.post('/ichra-classes', payload);
       setMessage('✅ ICHRA Class created successfully');
       setForm({ class_name: '', subclass_name: '', contribution: { employee: '', dependents: '' }});
       onCreated();
