@@ -78,11 +78,11 @@ function GroupForm() {
 
     try {
       const res = await api.post('/groups', payload);
-      setMessage('✅ Group with locations created successfully!');
+      setMessage(' Group with locations created successfully!');
       console.log('Created group:', res.data);
     } catch (err) {
       console.error(err);
-      setMessage('❌ Failed to create group.');
+      setMessage(' Failed to create group.');
     }
   };
 
@@ -132,7 +132,7 @@ function GroupForm() {
               />
               {index > 0 && (
                 <button type="button" onClick={() => removeLocation(index)} className="remove-btn">
-                  ❌ Remove Location
+                   Remove Location
                 </button>
               )}
             </div>
@@ -144,7 +144,7 @@ function GroupForm() {
         </button>
 
         <button type="submit" className="submit-btn">
-          🚀 Create Group
+           Create Group
         </button>
       </form>
       {message && <p>{message}</p>}

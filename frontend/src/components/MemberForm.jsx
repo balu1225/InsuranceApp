@@ -24,7 +24,7 @@ function MemberForm({ groupId, ichraClassId, onMemberAdded, onCancel }) {
   const [selectedClass, setSelectedClass] = useState(ichraClassId || '');
   const [message, setMessage] = useState('');
 
-  // Load available classes for dropdown
+
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -79,11 +79,11 @@ function MemberForm({ groupId, ichraClassId, onMemberAdded, onCancel }) {
         household_size: form.dependents.length + 1
       };
       await api.post('/members', payload);
-      setMessage('✅ Member added successfully!');
-      onMemberAdded(); // Refresh parent view
+      setMessage(' Member added successfully!');
+      onMemberAdded(); 
     } catch (err) {
       console.error('Error creating member:', err);
-      setMessage('❌ Failed to add member');
+      setMessage(' Failed to add member');
     }
   };
 
@@ -141,8 +141,8 @@ function MemberForm({ groupId, ichraClassId, onMemberAdded, onCancel }) {
           <button type="button" onClick={handleAddDependent}>➕ Add Dependent</button>
         </div>
 
-        <button type="submit">✅ Submit</button>
-        <button type="button" onClick={onCancel}>❌ Cancel</button>
+        <button type="submit">Submit</button>
+        <button type="button" onClick={onCancel}>Cancel</button>
         {message && <p>{message}</p>}
       </form>
     </div>

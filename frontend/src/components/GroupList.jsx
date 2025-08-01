@@ -18,7 +18,7 @@ function GroupList() {
       setGroups(res.data);
     } catch (err) {
       console.error('Error fetching groups:', err);
-      setMessage('❌ Failed to load groups.');
+      setMessage(' Failed to load groups.');
     }
   };
 
@@ -31,7 +31,7 @@ function GroupList() {
         fetchGroups();
       } catch (err) {
         console.error('Delete failed:', err);
-        alert('❌ Failed to delete group');
+        alert(' Failed to delete group');
       }
     }
   };
@@ -74,7 +74,7 @@ function GroupList() {
           <h3>➕ Add Class</h3>
           <IchraClassForm groupId={selectedGroup._id} onCreated={() => {}} />
 
-          <h3>📋 Existing Classes</h3>
+          <h3> Existing Classes</h3>
           <IchraClassList groupId={selectedGroup._id} />
         </div>
       </div>

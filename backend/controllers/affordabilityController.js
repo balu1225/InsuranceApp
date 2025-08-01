@@ -37,7 +37,7 @@ exports.calculateIchraAffordability = async (req, res) => {
       members: memberDetails.members
     });
   } catch (err) {
-    console.error('❌ Error in affordability calc:', err.message);
+    console.error('Error in affordability calc:', err.message);
     res.status(500).json({ message: 'Affordability calc failed', error: err.message });
   }
 };

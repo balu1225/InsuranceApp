@@ -37,7 +37,7 @@ exports.generateOffMarketQuotes = async (req, res) => {
     }
     res.json({ groupId, quotes: results });
   } catch (err) {
-    console.error('❌ Off-market quote generation failed:', err.message);
+    console.error(' Off-market quote generation failed:', err.message);
     res.status(500).json({ error: 'Failed to generate off-market quotes', details: err.message });
   }
 };
@@ -64,7 +64,7 @@ exports.generateOnMarketQuotes = async (req, res) => {
     }
     res.json({ groupId, quotes: results });
   } catch (err) {
-    console.error('❌ On-market quote generation failed:', err.message);
+    console.error(' On-market quote generation failed:', err.message);
     res.status(500).json({ error: 'Failed to generate on-market quotes', details: err.message });
   }
 };
@@ -95,7 +95,7 @@ exports.generateAllQuotes = async (req, res) => {
     }
     res.json({ groupId, quotes: results });
   } catch (err) {
-    console.error('❌ Error generating all quotes:', err.message);
+    console.error(' Error generating all quotes:', err.message);
     res.status(500).json({ error: 'Failed to generate quotes', details: err.message });
   }
 };

@@ -52,7 +52,7 @@ exports.generateComparison = async (req, res) => {
 
     res.json(response);
   } catch (err) {
-    console.error('❌ Comparison generation failed:', err.message);
+    console.error('Comparison generation failed:', err.message);
     res.status(500).json({ error: 'Comparison generation failed', details: err.message });
   }
 };

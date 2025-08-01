@@ -13,7 +13,7 @@ function MemberList({ groupId }) {
       setMembers(res.data);
     } catch (err) {
       console.error('Failed to fetch members:', err);
-      setMessage('❌ Error loading members.');
+      setMessage(' Error loading members.');
     }
   };
 
@@ -24,7 +24,7 @@ function MemberList({ groupId }) {
       fetchMembers(); // refresh list
     } catch (err) {
       console.error('Failed to delete member:', err);
-      setMessage('❌ Could not delete member.');
+      setMessage('Could not delete member.');
     }
   };
 
@@ -41,7 +41,7 @@ function MemberList({ groupId }) {
           <p><strong>DOB:</strong> {m.date_of_birth}</p>
           <p><strong>Zip:</strong> {m.zip_code}</p>
           <p><strong>Class ID:</strong> {m.ichra_class_id}</p>
-          <button className="delete-btn" onClick={() => handleDelete(m._id)}>❌ Delete</button>
+          <button className="delete-btn" onClick={() => handleDelete(m._id)}> Delete</button>
         </div>
       ))}
     </div>

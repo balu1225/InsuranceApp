@@ -12,7 +12,7 @@ function IchraClassList({ groupId }) {
       setClasses(res.data);
     } catch (err) {
       console.error('Failed to fetch classes:', err);
-      setMessage('❌ Error loading ICHRA classes.');
+      setMessage(' Error loading ICHRA classes.');
     }
   };
 
@@ -23,7 +23,7 @@ function IchraClassList({ groupId }) {
       fetchClasses();
     } catch (err) {
       console.error('Delete failed:', err);
-      setMessage('❌ Failed to delete class.');
+      setMessage('Failed to delete class.');
     }
   };
 
@@ -43,7 +43,7 @@ function IchraClassList({ groupId }) {
             {c.subclass_name && <p><strong>Subclass:</strong> {c.subclass_name}</p>}
             <p><strong>Employee Contribution:</strong> ${c.contribution.employee}</p>
             <p><strong>Dependent Contribution:</strong> ${c.contribution.dependents}</p>
-            <button className="delete-btn" onClick={() => handleDelete(c._id)}>❌ Delete</button>
+            <button className="delete-btn" onClick={() => handleDelete(c._id)}>Delete</button>
           </div>
         ))}
       </div>

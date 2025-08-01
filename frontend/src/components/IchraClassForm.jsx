@@ -48,12 +48,12 @@ function IchraClassForm({ groupId, onCreated }) {
       };
 
       await api.post('/ichra-classes', payload);
-      setMessage('✅ ICHRA Class created successfully');
+      setMessage(' ICHRA Class created successfully');
       setForm({ class_name: '', subclass_name: '', contribution: { employee: '', dependents: '' }});
       onCreated();
     } catch (err) {
       console.error(err);
-      setMessage('❌ Failed to create ICHRA class');
+      setMessage(' Failed to create ICHRA class');
     }
   };
 

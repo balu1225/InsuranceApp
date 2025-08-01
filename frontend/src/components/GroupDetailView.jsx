@@ -48,7 +48,7 @@ function GroupDetailView({ group, onBack, onDelete, onRefresh }) {
           <ul>
             {group.locations.map((loc, idx) => (
               <li key={idx}>
-                📍 {loc.name} – {loc.zip_code} – {loc.fips_code} – {loc.number_of_employees} employees
+                 {loc.name} – {loc.zip_code} – {loc.fips_code} – {loc.number_of_employees} employees
               </li>
             ))}
           </ul>
@@ -78,8 +78,8 @@ function GroupDetailView({ group, onBack, onDelete, onRefresh }) {
           {/* Class List */}
           <div className="class-list-section">
             <div className="class-list-header">
-              <h3>📋 Existing Classes</h3>
-              <button onClick={fetchClasses}>🔄 Refresh Classes</button>
+              <h3> Existing Classes</h3>
+              <button onClick={fetchClasses}>Refresh Classes</button>
             </div>
             <IchraClassList
               groupId={group._id}

@@ -19,7 +19,7 @@ const createGroup = async (req, res) => {
 
     res.status(201).json(saved);
   } catch (error) {
-    console.error("❌ Group creation failed:", {
+    console.error(" Group creation failed:", {
       status: error.response?.status,
       data: error.response?.data
     });
@@ -37,7 +37,7 @@ const getAllGroups = async (req, res) => {
     const groups = await Group.find();
     res.json(groups);
   } catch (err) {
-    console.error('❌ Error fetching groups:', err);
+    console.error('Error fetching groups:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -50,9 +50,9 @@ const deleteGroup = async (req, res) => {
     const deleted = await Group.findByIdAndDelete(id);
     if (!deleted) return res.status(404).json({ message: 'Group not found' });
 
-    res.json({ message: '✅ Group deleted successfully' });
+    res.json({ message: 'Group deleted successfully' });
   } catch (err) {
-    console.error('❌ Error deleting group:', err);
+    console.error(' Error deleting group:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -78,7 +78,7 @@ const refreshGroup = async (req, res) => {
     await group.save();
     res.json(group);
   } catch (err) {
-    console.error('❌ Error refreshing group:', err);
+    console.error('Error refreshing group:', err);
     res.status(500).json({ message: 'Refresh failed', error: err.message });
   }
 };

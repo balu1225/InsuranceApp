@@ -4,4 +4,4 @@ const { calculateIchraAffordability } = require('../controllers/affordabilityCon
 
 router.post('/:groupId/affordability', calculateIchraAffordability);
 
-module.exports = router; // ✅ not { router }
+module.exports = router; 

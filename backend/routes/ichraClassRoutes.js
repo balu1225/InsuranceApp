@@ -1,4 +1,4 @@
-// backend/routes/ichraClassRoutes.js
+
 
 const express = require('express');
 const router = express.Router();

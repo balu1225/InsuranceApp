@@ -13,7 +13,7 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch((err) => {
-    console.error('❌ MongoDB connection error:', err);
+    console.error('MongoDB connection error:', err);
     process.exit(1);
   });
 
@@ -27,9 +27,9 @@ app.use('/api/groups', require('./routes/memberRoutes'));
 app.use('/api/ichra-classes', require('./routes/ichraClassRoutes'));
 app.use('/api/quotes', require('./routes/quoteRoutes'));  
 app.use('/api/affordability', require('./routes/affordabilityRoutes'));
-app.use('/api/comparison', require('./routes/comparisonRoutes')); // ✅ mount
+app.use('/api/comparison', require('./routes/comparisonRoutes')); 
 
 const PORT = process.env.PORT || 5174;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

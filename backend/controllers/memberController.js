@@ -30,27 +30,25 @@ exports.createMembers = async (req, res) => {
 
     res.status(201).json(saved);
   } catch (error) {
-    console.error('❌ Error creating members:', error.message);
+    console.error(' Error creating members:', error.message);
     if (error.response?.data) {
-      console.error('❌ Ideon Error Response:', JSON.stringify(error.response.data, null, 2));
+      console.error('Ideon Error Response:', JSON.stringify(error.response.data, null, 2));
     }
     res.status(500).json({ message: 'Failed to create members', error: error.message });
   }
 };
 
-// ✅ Get members from local MongoDB only
 exports.getMembers = async (req, res) => {
   try {
     const { groupId } = req.params;
     const members = await Member.find({ group_id: groupId });
     res.json(members);
   } catch (err) {
-    console.error('❌ Error fetching members:', err);
+    console.error(' Error fetching members:', err);
     res.status(500).json({ message: 'Failed to fetch members' });
   }
 };
 
-// ✅ Replace all members via Ideon and Mongo
 exports.replaceMembers = async (req, res) => {
   try {
     const { groupId } = req.params;
@@ -79,7 +77,7 @@ exports.replaceMembers = async (req, res) => {
 
     res.json(saved);
   } catch (err) {
-    console.error('❌ Error replacing members:', err);
+    console.error(' Error replacing members:', err);
     res.status(500).json({ message: 'Failed to replace members' });
   }
 };
@@ -99,7 +97,7 @@ exports.deleteMembers = async (req, res) => {
 
     res.status(204).send(); // No content, success
   } catch (err) {
-    console.error('❌ Error deleting members:', err);
+    console.error(' Error deleting members:', err);
     res.status(500).json({ message: 'Failed to delete members' });
   }
 };
